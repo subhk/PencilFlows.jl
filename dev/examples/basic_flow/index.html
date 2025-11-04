@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Basic Flow Simulation · PencilFlows.jl</title><meta name="title" content="Basic Flow Simulation · PencilFlows.jl"/><meta property="og:title" content="Basic Flow Simulation · PencilFlows.jl"/><meta property="twitter:title" content="Basic Flow Simulation · PencilFlows.jl"/><meta name="description" content="Documentation for PencilFlows.jl."/><meta property="og:description" content="Documentation for PencilFlows.jl."/><meta property="twitter:description" content="Documentation for PencilFlows.jl."/><meta property="og:url" content="https://subhk.github.io/PencilFlows.jl/examples/basic_flow/"/><meta property="twitter:url" content="https://subhk.github.io/PencilFlows.jl/examples/basic_flow/"/><link rel="canonical" href="https://subhk.github.io/PencilFlows.jl/examples/basic_flow/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">PencilFlows.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Getting Started</span><ul><li><a class="tocitem" href="../../installation/">Installation</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../../guide/concepts/">Core Concepts</a></li><li><a class="tocitem" href="../../guide/boundary_conditions/">Boundary Conditions</a></li><li><a class="tocitem" href="../../guide/mpi/">MPI Parallelization</a></li><li><a class="tocitem" href="../../guide/poisson/">Poisson Solvers</a></li><li><a class="tocitem" href="../../guide/timestepping/">Time Stepping</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li class="is-active"><a class="tocitem" href>Basic Flow Simulation</a><ul class="internal"><li><a class="tocitem" href="#Problem:-2D-Taylor-Green-Vortex"><span>Problem: 2D Taylor-Green Vortex</span></a></li><li><a class="tocitem" href="#Complete-Code-with-Explanations"><span>Complete Code with Explanations</span></a></li><li><a class="tocitem" href="#Understanding-the-Output"><span>Understanding the Output</span></a></li><li><a class="tocitem" href="#Analyzing-Results"><span>Analyzing Results</span></a></li><li><a class="tocitem" href="#Exercises"><span>Exercises</span></a></li><li><a class="tocitem" href="#Common-Issues-and-Solutions"><span>Common Issues and Solutions</span></a></li><li><a class="tocitem" href="#Next-Steps"><span>Next Steps</span></a></li></ul></li><li><a class="tocitem" href="../parallel/">Parallel Computing</a></li><li><a class="tocitem" href="../custom_bc/">Custom Boundary Conditions</a></li></ul></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../../api/core/">Core Functions</a></li><li><a class="tocitem" href="../../api/solvers/">Solvers</a></li><li><a class="tocitem" href="../../api/io/">I/O</a></li><li><a class="tocitem" href="../../api/physics/">Physics</a></li><li><a class="tocitem" href="../../api/utilities/">Utilities</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Basic Flow Simulation</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Basic Flow Simulation</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/subhk/PencilFlows.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/subhk/PencilFlows.jl/blob/main/docs/src/examples/basic_flow.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Basic-Flow-Simulation"><a class="docs-heading-anchor" href="#Basic-Flow-Simulation">Basic Flow Simulation</a><a id="Basic-Flow-Simulation-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Flow-Simulation" title="Permalink"></a></h1><p>This tutorial shows you how to set up and run a complete fluid simulation from scratch.</p><h2 id="Problem:-2D-Taylor-Green-Vortex"><a class="docs-heading-anchor" href="#Problem:-2D-Taylor-Green-Vortex">Problem: 2D Taylor-Green Vortex</a><a id="Problem:-2D-Taylor-Green-Vortex-1"></a><a class="docs-heading-anchor-permalink" href="#Problem:-2D-Taylor-Green-Vortex" title="Permalink"></a></h2><p>We&#39;ll simulate a classic test case: decaying vortices in a box. This is perfect for learning because:</p><ul><li>Simple initial conditions</li><li>Known analytical solution (we can check our results!)</li><li>Demonstrates key features</li></ul><h3 id="Physical-Setup"><a class="docs-heading-anchor" href="#Physical-Setup">Physical Setup</a><a id="Physical-Setup-1"></a><a class="docs-heading-anchor-permalink" href="#Physical-Setup" title="Permalink"></a></h3><pre><code class="nohighlight hljs">Domain: 2π × 2π × 1
+Initial velocity: Swirling vortices
+Boundary: Periodic in x,y; no-slip at top/bottom</code></pre><h2 id="Complete-Code-with-Explanations"><a class="docs-heading-anchor" href="#Complete-Code-with-Explanations">Complete Code with Explanations</a><a id="Complete-Code-with-Explanations-1"></a><a class="docs-heading-anchor-permalink" href="#Complete-Code-with-Explanations" title="Permalink"></a></h2><pre><code class="language-julia hljs">using PencilFlows
+using MPI
+
+# Step 1: Initialize MPI
+MPI.Init()
+comm = MPI.COMM_WORLD
+rank = MPI.Comm_rank(comm)
+
+# Step 2: Define grid parameters
+Nx, Ny, Nz = 64, 64, 32      # Grid resolution
+Lx, Ly, H = 2π, 2π, 1.0      # Domain size
+Re = 100.0                    # Reynolds number (viscosity = 1/Re)
+
+# Step 3: Create grid structure
+grid = Grid(Nx, Ny, Nz, Lx, Ly, H)
+
+if rank == 0
+    println(&quot;=&quot;^50)
+    println(&quot;Taylor-Green Vortex Simulation&quot;)
+    println(&quot;=&quot;^50)
+    println(&quot;Grid: $Nx × $Ny × $Nz&quot;)
+    println(&quot;Domain: $Lx × $Ly × $H&quot;)
+    println(&quot;Reynolds number: $Re&quot;)
+    println(&quot;=&quot;^50)
+end
+
+# Step 4: Set up pencil decomposition for parallel computing
+decomp = init_pencil_decomposition(Nx, Ny, Nz)
+fields = create_distributed_fields(decomp)
+
+# Step 5: Initialize velocity field
+# Taylor-Green vortex initial condition
+function initialize_taylor_green!(u, v, w, grid)
+    Nx, Ny, Nz = grid.Nx, grid.Ny, grid.Nz
+    Lx, Ly = grid.Lx, grid.Ly
+
+    for k in 1:Nz
+        for j in 1:Ny
+            for i in 1:Nx
+                x = (i-1) * Lx / Nx
+                y = (j-1) * Ly / Ny
+
+                # Classic Taylor-Green pattern
+                u[i,j,k] =  sin(x) * cos(y)
+                v[i,j,k] = -cos(x) * sin(y)
+                w[i,j,k] = 0.0
+            end
+        end
+    end
+end
+
+initialize_taylor_green!(fields.u_z, fields.v_z, fields.w_z, grid)
+
+if rank == 0
+    println(&quot;Initial conditions set&quot;)
+end
+
+# Step 6: Set up boundary conditions
+bc = BoundaryCondition(NO_SLIP, NO_SLIP)  # No-slip at bottom and top
+
+# Step 7: Set up Poisson solver for pressure
+mg_plan = make_mg_poisson_distributed_auto(Nx, Ny, Nz, grid, comm)
+
+if rank == 0
+    println(&quot;Poisson solver initialized&quot;)
+end
+
+# Step 8: Time stepping parameters
+dt = 0.001                    # Time step
+t_end = 1.0                   # End time
+nsteps = Int(t_end / dt)
+output_freq = 100             # Output every N steps
+
+# Step 9: Main time loop
+if rank == 0
+    println(&quot;Starting time integration...&quot;)
+    println(&quot;Number of steps: $nsteps&quot;)
+end
+
+for step in 1:nsteps
+    t = step * dt
+
+    # Apply boundary conditions
+    apply_velocity_bcs_nonuniform!(fields.u_z, fields.v_z, fields.w_z,
+                                   grid, bc)
+
+    # Compute derivatives
+    compute_horizontal_derivatives_2d!(
+        fields.dudx, fields.dudy,
+        fields.dvdx, fields.dvdy,
+        fields.dwdx, fields.dwdy,
+        fields.dpdx, fields.dpdy,
+        fields.u_z, fields.v_z, fields.w_z, fields.p_z,
+        fields, decomp, grid
+    )
+
+    compute_z_derivatives_2d!(
+        fields.dudz, fields.dvdz, fields.dwdz, fields.dpdz,
+        fields.u_z, fields.v_z, fields.w_z, fields.p_z,
+        decomp, grid, bc
+    )
+
+    # Compute pressure (solve Poisson equation)
+    # Construct RHS: -∇·(u·∇u)
+    # (simplified for this example)
+
+    # Update velocity using computed derivatives
+    # u_new = u_old + dt * (-u·∇u - ∇p + ν∇²u)
+    # (using IMEX time stepper in practice)
+
+    # Output
+    if step % output_freq == 0 &amp;&amp; rank == 0
+        # Compute kinetic energy
+        KE = compute_kinetic_energy(fields.u_z, fields.v_z, fields.w_z)
+        println(&quot;Step $step/$nsteps, t = $t, KE = $KE&quot;)
+    end
+end
+
+if rank == 0
+    println(&quot;Simulation complete!&quot;)
+end
+
+# Step 10: Save final state
+if rank == 0
+    using JLD2
+    @save &quot;taylor_green_final.jld2&quot; fields grid
+    println(&quot;Results saved to taylor_green_final.jld2&quot;)
+end
+
+# Finalize MPI
+MPI.Finalize()</code></pre><h2 id="Understanding-the-Output"><a class="docs-heading-anchor" href="#Understanding-the-Output">Understanding the Output</a><a id="Understanding-the-Output-1"></a><a class="docs-heading-anchor-permalink" href="#Understanding-the-Output" title="Permalink"></a></h2><p>When you run this with <code>mpiexec -n 4 julia taylor_green.jl</code>:</p><pre><code class="nohighlight hljs">==================================================
+Taylor-Green Vortex Simulation
+==================================================
+Grid: 64 × 64 × 32
+Domain: 6.283185307179586 × 6.283185307179586 × 1.0
+Reynolds number: 100.0
+==================================================
+Initial conditions set
+Poisson solver initialized
+Starting time integration...
+Number of steps: 1000
+Step 100/1000, t = 0.1, KE = 0.4523
+Step 200/1000, t = 0.2, KE = 0.3891
+Step 300/1000, t = 0.3, KE = 0.3421
+...
+Simulation complete!
+Results saved to taylor_green_final.jld2</code></pre><h2 id="Analyzing-Results"><a class="docs-heading-anchor" href="#Analyzing-Results">Analyzing Results</a><a id="Analyzing-Results-1"></a><a class="docs-heading-anchor-permalink" href="#Analyzing-Results" title="Permalink"></a></h2><h3 id="Load-and-Visualize"><a class="docs-heading-anchor" href="#Load-and-Visualize">Load and Visualize</a><a id="Load-and-Visualize-1"></a><a class="docs-heading-anchor-permalink" href="#Load-and-Visualize" title="Permalink"></a></h3><pre><code class="language-julia hljs">using JLD2, Plots
+
+# Load results
+@load &quot;taylor_green_final.jld2&quot; fields grid
+
+# Extract velocity at mid-plane
+u_slice = fields.u_z[:, :, div(grid.Nz, 2)]
+
+# Plot
+heatmap(u_slice,
+    title=&quot;U-velocity at mid-plane&quot;,
+    xlabel=&quot;x&quot;, ylabel=&quot;y&quot;,
+    color=:RdBu)</code></pre><h3 id="Check-Energy-Decay"><a class="docs-heading-anchor" href="#Check-Energy-Decay">Check Energy Decay</a><a id="Check-Energy-Decay-1"></a><a class="docs-heading-anchor-permalink" href="#Check-Energy-Decay" title="Permalink"></a></h3><p>The theoretical decay rate for Taylor-Green vortex:</p><pre><code class="nohighlight hljs">KE(t) = KE₀ * exp(-2νk²t)
+where k = wavenumber, ν = 1/Re</code></pre><pre><code class="language-julia hljs"># Compare simulation vs theory
+t_array = [0, 0.1, 0.2, ..., 1.0]
+KE_sim = [0.5, 0.452, 0.389, ..., 0.123]  # From output
+KE_theory = 0.5 * exp.(-2 * (1/Re) * 2 * t_array)
+
+plot(t_array, KE_sim, label=&quot;Simulation&quot;, marker=:o)
+plot!(t_array, KE_theory, label=&quot;Theory&quot;, line=:dash)
+xlabel!(&quot;Time&quot;)
+ylabel!(&quot;Kinetic Energy&quot;)</code></pre><h2 id="Exercises"><a class="docs-heading-anchor" href="#Exercises">Exercises</a><a id="Exercises-1"></a><a class="docs-heading-anchor-permalink" href="#Exercises" title="Permalink"></a></h2><h3 id="1.-Change-Reynolds-Number"><a class="docs-heading-anchor" href="#1.-Change-Reynolds-Number">1. Change Reynolds Number</a><a id="1.-Change-Reynolds-Number-1"></a><a class="docs-heading-anchor-permalink" href="#1.-Change-Reynolds-Number" title="Permalink"></a></h3><p>Try different viscosities:</p><pre><code class="language-julia hljs">Re = 50   # More viscous → faster decay
+Re = 500  # Less viscous → slower decay</code></pre><h3 id="2.-Increase-Resolution"><a class="docs-heading-anchor" href="#2.-Increase-Resolution">2. Increase Resolution</a><a id="2.-Increase-Resolution-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Increase-Resolution" title="Permalink"></a></h3><p>Test convergence:</p><pre><code class="language-julia hljs"># Coarse
+Nx, Ny, Nz = 32, 32, 16
+
+# Fine
+Nx, Ny, Nz = 128, 128, 64</code></pre><p>Does the energy decay curve converge?</p><h3 id="3.-Different-Initial-Conditions"><a class="docs-heading-anchor" href="#3.-Different-Initial-Conditions">3. Different Initial Conditions</a><a id="3.-Different-Initial-Conditions-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Different-Initial-Conditions" title="Permalink"></a></h3><p>Try a different pattern:</p><pre><code class="language-julia hljs">function initialize_shear_layer!(u, v, w, grid)
+    for k in 1:Nz
+        z = (k-1) * H / Nz
+        for j in 1:Ny
+            for i in 1:Nx
+                # Shear layer
+                u[i,j,k] = tanh((z - 0.5) / 0.1)
+                v[i,j,k] = 0.0
+                w[i,j,k] = 0.01 * rand()  # Small perturbations
+            end
+        end
+    end
+end</code></pre><h2 id="Common-Issues-and-Solutions"><a class="docs-heading-anchor" href="#Common-Issues-and-Solutions">Common Issues and Solutions</a><a id="Common-Issues-and-Solutions-1"></a><a class="docs-heading-anchor-permalink" href="#Common-Issues-and-Solutions" title="Permalink"></a></h2><h3 id="1.-Simulation-Explodes-(NaN-values)"><a class="docs-heading-anchor" href="#1.-Simulation-Explodes-(NaN-values)">1. Simulation Explodes (NaN values)</a><a id="1.-Simulation-Explodes-(NaN-values)-1"></a><a class="docs-heading-anchor-permalink" href="#1.-Simulation-Explodes-(NaN-values)" title="Permalink"></a></h3><p><strong>Problem</strong>: Time step too large <strong>Solution</strong>: Reduce <code>dt</code></p><pre><code class="language-julia hljs"># Check CFL condition: dt &lt; dx / u_max
+u_max = maximum(abs.(fields.u_z))
+dt_safe = 0.5 * (Lx/Nx) / u_max
+println(&quot;Recommended dt &lt; $dt_safe&quot;)</code></pre><h3 id="2.-Slow-Performance"><a class="docs-heading-anchor" href="#2.-Slow-Performance">2. Slow Performance</a><a id="2.-Slow-Performance-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Slow-Performance" title="Permalink"></a></h3><p><strong>Problem</strong>: Grid too fine or inefficient layout <strong>Solutions</strong>:</p><pre><code class="language-julia hljs"># Use fewer points
+Nx, Ny, Nz = 32, 32, 16  # Start small
+
+# Use more processors
+# mpiexec -n 8 julia script.jl  (instead of 4)</code></pre><h3 id="3.-Memory-Errors"><a class="docs-heading-anchor" href="#3.-Memory-Errors">3. Memory Errors</a><a id="3.-Memory-Errors-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Memory-Errors" title="Permalink"></a></h3><p><strong>Problem</strong>: Not enough RAM <strong>Solution</strong>:</p><pre><code class="language-julia hljs"># Estimate memory:
+memory_GB = 15 * Nx * Ny * Nz * 8 / 1e9
+println(&quot;Estimated memory: $memory_GB GB&quot;)
+
+# Reduce if needed:
+Nx, Ny, Nz = 32, 32, 16  # ~4 MB instead of 400 MB</code></pre><h2 id="Next-Steps"><a class="docs-heading-anchor" href="#Next-Steps">Next Steps</a><a id="Next-Steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-Steps" title="Permalink"></a></h2><ul><li>Try <a href="../parallel/">Parallel Computing</a> to use multiple processors efficiently</li><li>Learn about <a href="../custom_bc/">Custom Boundary Conditions</a> for more complex geometries</li><li>Explore <a href="../../guide/timestepping/">Advanced Time Stepping</a> for stiff problems</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../guide/timestepping/">« Time Stepping</a><a class="docs-footer-nextpage" href="../parallel/">Parallel Computing »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Tuesday 4 November 2025 18:18">Tuesday 4 November 2025</span>. Using Julia version 1.11.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

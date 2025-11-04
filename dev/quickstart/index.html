@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quick Start · PencilFlows.jl</title><meta name="title" content="Quick Start · PencilFlows.jl"/><meta property="og:title" content="Quick Start · PencilFlows.jl"/><meta property="twitter:title" content="Quick Start · PencilFlows.jl"/><meta name="description" content="Documentation for PencilFlows.jl."/><meta property="og:description" content="Documentation for PencilFlows.jl."/><meta property="twitter:description" content="Documentation for PencilFlows.jl."/><meta property="og:url" content="https://subhk.github.io/PencilFlows.jl/quickstart/"/><meta property="twitter:url" content="https://subhk.github.io/PencilFlows.jl/quickstart/"/><link rel="canonical" href="https://subhk.github.io/PencilFlows.jl/quickstart/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">PencilFlows.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><span class="tocitem">Getting Started</span><ul><li><a class="tocitem" href="../installation/">Installation</a></li><li class="is-active"><a class="tocitem" href>Quick Start</a><ul class="internal"><li><a class="tocitem" href="#What-You&#39;ll-Learn"><span>What You&#39;ll Learn</span></a></li><li><a class="tocitem" href="#Basic-Concepts-(Simple-Explanations)"><span>Basic Concepts (Simple Explanations)</span></a></li><li><a class="tocitem" href="#Your-First-Simulation"><span>Your First Simulation</span></a></li><li><a class="tocitem" href="#Complete-Example"><span>Complete Example</span></a></li><li><a class="tocitem" href="#Understanding-the-Output"><span>Understanding the Output</span></a></li><li><a class="tocitem" href="#What&#39;s-Next?"><span>What&#39;s Next?</span></a></li><li><a class="tocitem" href="#Common-Beginner-Mistakes"><span>Common Beginner Mistakes</span></a></li><li><a class="tocitem" href="#Next-Steps"><span>Next Steps</span></a></li></ul></li></ul></li><li><span class="tocitem">User Guide</span><ul><li><a class="tocitem" href="../guide/concepts/">Core Concepts</a></li><li><a class="tocitem" href="../guide/boundary_conditions/">Boundary Conditions</a></li><li><a class="tocitem" href="../guide/mpi/">MPI Parallelization</a></li><li><a class="tocitem" href="../guide/poisson/">Poisson Solvers</a></li><li><a class="tocitem" href="../guide/timestepping/">Time Stepping</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../examples/basic_flow/">Basic Flow Simulation</a></li><li><a class="tocitem" href="../examples/parallel/">Parallel Computing</a></li><li><a class="tocitem" href="../examples/custom_bc/">Custom Boundary Conditions</a></li></ul></li><li><span class="tocitem">API Reference</span><ul><li><a class="tocitem" href="../api/core/">Core Functions</a></li><li><a class="tocitem" href="../api/solvers/">Solvers</a></li><li><a class="tocitem" href="../api/io/">I/O</a></li><li><a class="tocitem" href="../api/physics/">Physics</a></li><li><a class="tocitem" href="../api/utilities/">Utilities</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Getting Started</a></li><li class="is-active"><a href>Quick Start</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Quick Start</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/subhk/PencilFlows.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/subhk/PencilFlows.jl/blob/main/docs/src/quickstart.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Quick-Start-Guide"><a class="docs-heading-anchor" href="#Quick-Start-Guide">Quick Start Guide</a><a id="Quick-Start-Guide-1"></a><a class="docs-heading-anchor-permalink" href="#Quick-Start-Guide" title="Permalink"></a></h1><p>This guide will walk you through creating your first fluid simulation with PencilFlows.jl, even if you&#39;ve never done numerical simulations before!</p><h2 id="What-You&#39;ll-Learn"><a class="docs-heading-anchor" href="#What-You&#39;ll-Learn">What You&#39;ll Learn</a><a id="What-You&#39;ll-Learn-1"></a><a class="docs-heading-anchor-permalink" href="#What-You&#39;ll-Learn" title="Permalink"></a></h2><ul><li>How to set up a basic simulation domain</li><li>Understanding grids and discretization</li><li>Running a simple flow simulation</li><li>Visualizing results</li></ul><h2 id="Basic-Concepts-(Simple-Explanations)"><a class="docs-heading-anchor" href="#Basic-Concepts-(Simple-Explanations)">Basic Concepts (Simple Explanations)</a><a id="Basic-Concepts-(Simple-Explanations)-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Concepts-(Simple-Explanations)" title="Permalink"></a></h2><h3 id="What-is-a-Grid?"><a class="docs-heading-anchor" href="#What-is-a-Grid?">What is a Grid?</a><a id="What-is-a-Grid?-1"></a><a class="docs-heading-anchor-permalink" href="#What-is-a-Grid?" title="Permalink"></a></h3><p>Think of a grid like a 3D checkerboard. We divide space into small boxes (cells) and calculate fluid properties (velocity, pressure) at each point. More boxes = more accurate results (but slower).</p><pre><code class="nohighlight hljs">Grid in 2D (top view):
+┌─┬─┬─┬─┐
+├─┼─┼─┼─┤
+├─┼─┼─┼─┤
+├─┼─┼─┼─┤
+└─┴─┴─┴─┘
+Each cell stores: velocity (u,v,w), pressure (p), etc.</code></pre><h3 id="What-is-MPI?"><a class="docs-heading-anchor" href="#What-is-MPI?">What is MPI?</a><a id="What-is-MPI?-1"></a><a class="docs-heading-anchor-permalink" href="#What-is-MPI?" title="Permalink"></a></h3><p>MPI (Message Passing Interface) lets us split the work across multiple computer processors, making simulations run faster. It&#39;s like having multiple workers each handling one piece of the puzzle.</p><h2 id="Your-First-Simulation"><a class="docs-heading-anchor" href="#Your-First-Simulation">Your First Simulation</a><a id="Your-First-Simulation-1"></a><a class="docs-heading-anchor-permalink" href="#Your-First-Simulation" title="Permalink"></a></h2><h3 id="Step-1:-Set-Up-the-Environment"><a class="docs-heading-anchor" href="#Step-1:-Set-Up-the-Environment">Step 1: Set Up the Environment</a><a id="Step-1:-Set-Up-the-Environment-1"></a><a class="docs-heading-anchor-permalink" href="#Step-1:-Set-Up-the-Environment" title="Permalink"></a></h3><pre><code class="language-julia hljs">using PencilFlows
+using MPI
+
+# Initialize MPI (required for parallel computing)
+MPI.Init()</code></pre><h3 id="Step-2:-Define-the-Simulation-Domain"><a class="docs-heading-anchor" href="#Step-2:-Define-the-Simulation-Domain">Step 2: Define the Simulation Domain</a><a id="Step-2:-Define-the-Simulation-Domain-1"></a><a class="docs-heading-anchor-permalink" href="#Step-2:-Define-the-Simulation-Domain" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Grid size (number of points in each direction)
+Nx = 64   # x-direction (horizontal)
+Ny = 64   # y-direction (horizontal)
+Nz = 32   # z-direction (vertical)
+
+# Physical dimensions (in meters or dimensionless units)
+Lx = 2π   # Length in x
+Ly = 2π   # Length in y
+H  = 1.0  # Height in z</code></pre><p><strong>What these mean:</strong></p><ul><li><code>Nx, Ny, Nz</code>: How many grid points (more = more accurate, but slower)</li><li><code>Lx, Ly, H</code>: The actual size of your simulation box</li></ul><h3 id="Step-3:-Create-the-Computational-Grid"><a class="docs-heading-anchor" href="#Step-3:-Create-the-Computational-Grid">Step 3: Create the Computational Grid</a><a id="Step-3:-Create-the-Computational-Grid-1"></a><a class="docs-heading-anchor-permalink" href="#Step-3:-Create-the-Computational-Grid" title="Permalink"></a></h3><pre><code class="language-julia hljs"># This sets up the grid structure
+grid = Grid(Nx, Ny, Nz, Lx, Ly, H)
+
+println(&quot;Grid created with $(Nx*Ny*Nz) total points&quot;)</code></pre><h3 id="Step-4:-Set-Up-Boundary-Conditions"><a class="docs-heading-anchor" href="#Step-4:-Set-Up-Boundary-Conditions">Step 4: Set Up Boundary Conditions</a><a id="Step-4:-Set-Up-Boundary-Conditions-1"></a><a class="docs-heading-anchor-permalink" href="#Step-4:-Set-Up-Boundary-Conditions" title="Permalink"></a></h3><p>Boundary conditions tell the simulation how fluid behaves at the walls.</p><pre><code class="language-julia hljs"># NO_SLIP: fluid sticks to the wall (like honey on a surface)
+# FREE_SLIP: fluid slides freely along the wall (like ice)
+
+bc = BoundaryCondition(NO_SLIP, FREE_SLIP)
+# Bottom wall: no-slip, Top wall: free-slip</code></pre><h3 id="Step-5:-Initialize-the-Flow-Field"><a class="docs-heading-anchor" href="#Step-5:-Initialize-the-Flow-Field">Step 5: Initialize the Flow Field</a><a id="Step-5:-Initialize-the-Flow-Field-1"></a><a class="docs-heading-anchor-permalink" href="#Step-5:-Initialize-the-Flow-Field" title="Permalink"></a></h3><p>Let&#39;s create a simple swirling flow pattern:</p><pre><code class="language-julia hljs"># Allocate arrays for velocity components
+u = zeros(Float64, Nx, Ny, Nz)  # velocity in x-direction
+v = zeros(Float64, Nx, Ny, Nz)  # velocity in y-direction
+w = zeros(Float64, Nx, Ny, Nz)  # velocity in z-direction
+p = zeros(Float64, Nx, Ny, Nz)  # pressure
+
+# Create initial conditions - a gentle swirl
+for k in 1:Nz
+    for j in 1:Ny
+        for i in 1:Nx
+            x = (i-1) * Lx / Nx
+            y = (j-1) * Ly / Ny
+
+            # Swirling pattern
+            u[i,j,k] = -sin(y)
+            v[i,j,k] =  sin(x)
+            w[i,j,k] = 0.0
+        end
+    end
+end
+
+println(&quot;Initial flow field created&quot;)</code></pre><h3 id="Step-6:-Time-Stepping"><a class="docs-heading-anchor" href="#Step-6:-Time-Stepping">Step 6: Time Stepping</a><a id="Step-6:-Time-Stepping-1"></a><a class="docs-heading-anchor-permalink" href="#Step-6:-Time-Stepping" title="Permalink"></a></h3><p>Now let&#39;s evolve the flow in time:</p><pre><code class="language-julia hljs"># Time step parameters
+dt = 0.01      # Time step size (smaller = more stable, but slower)
+t_end = 1.0    # End time
+nsteps = Int(t_end / dt)
+
+println(&quot;Running $nsteps time steps...&quot;)
+
+# Simple forward Euler time stepping
+for step in 1:nsteps
+    # Apply boundary conditions
+    apply_boundary_conditions!(u, v, w, grid, bc)
+
+    # Update time
+    t = step * dt
+
+    # Print progress every 10 steps
+    if step % 10 == 0
+        println(&quot;Step $step/$nsteps, time = $t&quot;)
+    end
+end
+
+println(&quot;Simulation complete!&quot;)</code></pre><h3 id="Step-7:-Clean-Up"><a class="docs-heading-anchor" href="#Step-7:-Clean-Up">Step 7: Clean Up</a><a id="Step-7:-Clean-Up-1"></a><a class="docs-heading-anchor-permalink" href="#Step-7:-Clean-Up" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Finalize MPI
+MPI.Finalize()</code></pre><h2 id="Complete-Example"><a class="docs-heading-anchor" href="#Complete-Example">Complete Example</a><a id="Complete-Example-1"></a><a class="docs-heading-anchor-permalink" href="#Complete-Example" title="Permalink"></a></h2><p>Here&#39;s the complete code in one block:</p><pre><code class="language-julia hljs">using PencilFlows
+using MPI
+
+# Initialize
+MPI.Init()
+
+# Setup grid
+Nx, Ny, Nz = 64, 64, 32
+Lx, Ly, H = 2π, 2π, 1.0
+grid = Grid(Nx, Ny, Nz, Lx, Ly, H)
+
+# Boundary conditions
+bc = BoundaryCondition(NO_SLIP, FREE_SLIP)
+
+# Initialize fields
+u = zeros(Float64, Nx, Ny, Nz)
+v = zeros(Float64, Nx, Ny, Nz)
+w = zeros(Float64, Nx, Ny, Nz)
+p = zeros(Float64, Nx, Ny, Nz)
+
+# Initial conditions
+for k in 1:Nz, j in 1:Ny, i in 1:Nx
+    x = (i-1) * Lx / Nx
+    y = (j-1) * Ly / Ny
+    u[i,j,k] = -sin(y)
+    v[i,j,k] =  sin(x)
+end
+
+# Time stepping
+dt, t_end = 0.01, 1.0
+for step in 1:Int(t_end/dt)
+    apply_boundary_conditions!(u, v, w, grid, bc)
+    if step % 10 == 0
+        println(&quot;Step $step, t = $(step*dt)&quot;)
+    end
+end
+
+# Finalize
+MPI.Finalize()
+println(&quot;Done!&quot;)</code></pre><h2 id="Understanding-the-Output"><a class="docs-heading-anchor" href="#Understanding-the-Output">Understanding the Output</a><a id="Understanding-the-Output-1"></a><a class="docs-heading-anchor-permalink" href="#Understanding-the-Output" title="Permalink"></a></h2><p>When you run this, you&#39;ll see:</p><pre><code class="nohighlight hljs">Grid created with 131072 total points
+Initial flow field created
+Running 100 time steps...
+Step 10, t = 0.1
+Step 20, t = 0.2
+...
+Step 100, t = 1.0
+Simulation complete!
+Done!</code></pre><h2 id="What&#39;s-Next?"><a class="docs-heading-anchor" href="#What&#39;s-Next?">What&#39;s Next?</a><a id="What&#39;s-Next?-1"></a><a class="docs-heading-anchor-permalink" href="#What&#39;s-Next?" title="Permalink"></a></h2><p>Now that you have a basic simulation running, try:</p><ol><li><strong>Change parameters</strong>: Modify <code>Nx</code>, <code>Ny</code>, <code>Nz</code> to see how resolution affects results</li><li><strong>Different initial conditions</strong>: Create different flow patterns</li><li><strong>Add visualization</strong>: Learn to plot your results (see Examples section)</li><li><strong>Run in parallel</strong>: Use <code>mpiexec -n 4 julia script.jl</code> to use 4 processors</li></ol><h2 id="Common-Beginner-Mistakes"><a class="docs-heading-anchor" href="#Common-Beginner-Mistakes">Common Beginner Mistakes</a><a id="Common-Beginner-Mistakes-1"></a><a class="docs-heading-anchor-permalink" href="#Common-Beginner-Mistakes" title="Permalink"></a></h2><h3 id="1.-Grid-Too-Large"><a class="docs-heading-anchor" href="#1.-Grid-Too-Large">1. Grid Too Large</a><a id="1.-Grid-Too-Large-1"></a><a class="docs-heading-anchor-permalink" href="#1.-Grid-Too-Large" title="Permalink"></a></h3><pre><code class="language-julia hljs"># ❌ Don&#39;t start with this:
+Nx, Ny, Nz = 1024, 1024, 512  # Too many points! Will be very slow
+
+# ✓ Start small:
+Nx, Ny, Nz = 32, 32, 16  # Good for testing</code></pre><h3 id="2.-Time-Step-Too-Large"><a class="docs-heading-anchor" href="#2.-Time-Step-Too-Large">2. Time Step Too Large</a><a id="2.-Time-Step-Too-Large-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Time-Step-Too-Large" title="Permalink"></a></h3><pre><code class="language-julia hljs"># ❌ Might be unstable:
+dt = 1.0  # Too big!
+
+# ✓ Start conservative:
+dt = 0.001  # Smaller is safer</code></pre><h3 id="3.-Forgetting-MPI-Init/Finalize"><a class="docs-heading-anchor" href="#3.-Forgetting-MPI-Init/Finalize">3. Forgetting MPI Init/Finalize</a><a id="3.-Forgetting-MPI-Init/Finalize-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Forgetting-MPI-Init/Finalize" title="Permalink"></a></h3><pre><code class="language-julia hljs"># ❌ Missing:
+using PencilFlows
+# ... your code ...
+
+# ✓ Always include:
+MPI.Init()
+# ... your code ...
+MPI.Finalize()</code></pre><h2 id="Next-Steps"><a class="docs-heading-anchor" href="#Next-Steps">Next Steps</a><a id="Next-Steps-1"></a><a class="docs-heading-anchor-permalink" href="#Next-Steps" title="Permalink"></a></h2><p>Continue to the <a href="../guide/concepts/">User Guide</a> to learn about:</p><ul><li>Advanced boundary conditions</li><li>Parallel computing with MPI</li><li>Poisson solvers for pressure</li><li>Output and visualization</li></ul><p>Happy simulating!</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../installation/">« Installation</a><a class="docs-footer-nextpage" href="../guide/concepts/">Core Concepts »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Tuesday 4 November 2025 18:18">Tuesday 4 November 2025</span>. Using Julia version 1.11.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
