@@ -1,0 +1,197 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: '1.10'
+            os: macos-latest
+            arch: aarch64
+          - version: '1.11'
+            os: macos-latest
+            arch: aarch64
+          - version: '1.10'
+            os: windows-latest
+            arch: x64
+          - version: '1.11'
+            os: windows-latest
+            arch: x64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+
+      - uses: julia-actions/cache@v1
+
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install open-mpi
+
+      - name: Configure MPI.jl (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          # Find the MPI library path installed by Homebrew
+          MPI_PATH=$(brew --prefix open-mpi)
+          echo "MPI installed at: $MPI_PATH"
+
+          # List available MPI libraries
+          echo "Available MPI libraries:"
+          ls -la $MPI_PATH/lib/libmpi* || true
+
+          # Find the actual library name
+          if [ -f "$MPI_PATH/lib/libmpi.dylib" ]; then
+            LIB_NAME="libmpi"
+          elif [ -f "$MPI_PATH/lib/libmpi.40.dylib" ]; then
+            LIB_NAME="libmpi.40"
+          else
+            # Find any libmpi variant
+            LIB_NAME=$(ls $MPI_PATH/lib/libmpi*.dylib 2>/dev/null | head -1 | xargs basename | sed 's/\.dylib$//')
+          fi
+
+          echo "Using library name: $LIB_NAME"
+
+          # Configure MPIPreferences
+          julia --project=. -e "
+            using Pkg
+            Pkg.add(\"MPIPreferences\")
+            using MPIPreferences
+            MPIPreferences.use_system_binary(
+              library_names=[\"$LIB_NAME\"],
+              extra_paths=[\"$MPI_PATH/lib\"],
+              mpiexec=\"$MPI_PATH/bin/mpiexec\"
+            )
+          "
+
+      - name: Install system dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          # Download and install MS-MPI
+          curl -L -o msmpisdk.msi https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisdk.msi
+          curl -L -o msmpisetup.exe https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msiexec //i msmpisdk.msi //quiet //norestart
+          Start-Process -FilePath "msmpisetup.exe" -ArgumentList "-unattend" -Wait
+          # Add MPI to PATH
+          echo "C:\Program Files\Microsoft MPI\Bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Configure MPI.jl (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          julia --project=. -e 'using Pkg; Pkg.add("MPIPreferences"); using MPIPreferences; MPIPreferences.use_system_binary(library_names=["msmpi"], extra_paths=["C:\\Program Files\\Microsoft MPI\\Bin"])'
+
+      - name: Install Julia dependencies
+        run: |
+          julia --project=. -e 'using Pkg; Pkg.build(); Pkg.precompile()'
+
+      - name: Run tests
+        run: julia --project=. runtests.jl
+
+      - name: Run MPI tests (macOS/Linux)
+        if: runner.os != 'Windows'
+        run: |
+          mpiexec -n 2 julia --project=. -e '
+            using MPI
+            MPI.Init()
+            println("MPI initialized with ", MPI.Comm_size(MPI.COMM_WORLD), " processes")
+            MPI.Finalize()
+          '
+
+      - name: Run MPI tests (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          mpiexec -n 2 julia --project=. -e "using MPI; MPI.Init(); println(`"MPI initialized with `", MPI.Comm_size(MPI.COMM_WORLD), `" processes`"); MPI.Finalize()"
+        shell: pwsh
+
+  test-serial:
+    name: Serial Tests (No MPI)
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: '1.11'
+
+      - uses: julia-actions/cache@v1
+
+      - name: Install Julia dependencies
+        run: |
+          julia --project=. -e 'using Pkg; Pkg.build(); Pkg.precompile()'
+
+      - name: Run serial-only tests
+        run: julia --project=. tests/test_core_functionality.jl
+
+  lint:
+    name: Code Quality
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: '1.11'
+
+      - name: Check for syntax errors
+        run: |
+          julia --project=. -e '
+            using Pkg
+            Pkg.instantiate()
+
+            # Try to load the package
+            try
+              include("src/PencilFlows.jl")
+              using .PencilFlows
+              println("✓ Package loaded successfully")
+            catch e
+              println("✗ Package failed to load")
+              showerror(stdout, e, catch_backtrace())
+              exit(1)
+            end
+          '
+
+      - name: Check for consistent imports
+        run: |
+          # Check that PencilFFTs is imported before PencilArrays consistently
+          echo "Checking import order consistency..."
+
+          # Find files with both imports
+          files=$(grep -l "using PencilFFTs" src/**/*.jl | xargs grep -l "using PencilArrays")
+
+          for file in $files; do
+            echo "Checking $file"
+            # Verify PencilFFTs comes before PencilArrays in the file
+            pencil_fft_line=$(grep -n "using PencilFFTs" "$file" | head -1 | cut -d: -f1)
+            pencil_arr_line=$(grep -n "using PencilArrays" "$file" | head -1 | cut -d: -f1)
+
+            if [ ! -z "$pencil_fft_line" ] && [ ! -z "$pencil_arr_line" ]; then
+              if [ "$pencil_fft_line" -gt "$pencil_arr_line" ]; then
+                echo "✗ Import order incorrect in $file"
+                exit 1
+              fi
+            fi
+          done
+
+          echo "✓ Import order is consistent"
